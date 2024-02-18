@@ -1,8 +1,10 @@
 
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationModule.Entities
 {
+    [Index(nameof(Email), Name = "Ix_User__Email", IsUnique = true)]
     public class User : BaseObj
     {
         [Required]

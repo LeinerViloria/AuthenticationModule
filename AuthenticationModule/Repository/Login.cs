@@ -1,6 +1,7 @@
 
 using AuthenticationModule.Access;
 using AuthenticationModule.DTOS;
+using AuthenticationModule.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationModule.Repository
@@ -19,6 +20,19 @@ namespace AuthenticationModule.Repository
 
         public string Register(UserToCreateDTO Obj)
         {
+            var NewUser = new User()
+            {
+                CreationDate = DateTime.UtcNow,
+                Email = Obj.Email,
+                Password = Obj.Password
+            };
+
+            using(var context = _dbContextFactory.CreateDbContext())
+            {
+                context.Add(NewUser);
+                context.SaveChanges();
+            }
+
             var Token = "Token X";
             return Token;
         }

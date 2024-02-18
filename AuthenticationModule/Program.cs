@@ -32,9 +32,17 @@ app.MapPost("/login", (IServiceProvider provider) =>
 
 app.MapPost("/register", (IServiceProvider provider, UserToCreateDTO Data) =>
 {
-    var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
-    var Result = Login.Register(Data);
-    return Result;
+   try
+   {
+        var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
+        var Result = Login.Register(Data);
+        return Result;
+   }
+   catch (Exception e)
+   {
+        return string.IsNullOrEmpty($"{e.InnerException}") ?
+            e.Message : $"{e.InnerException}";
+   }
 }).WithName("SignUp")
 .WithOpenApi();
 

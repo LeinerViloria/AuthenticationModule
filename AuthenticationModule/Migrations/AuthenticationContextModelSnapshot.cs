@@ -30,7 +30,7 @@ namespace AuthenticationModule.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime(6)");
@@ -39,7 +39,15 @@ namespace AuthenticationModule.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
                     b.HasKey("Rowid");
+
+                    b.HasIndex(new[] { "Email" }, "Ix_User__Email")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

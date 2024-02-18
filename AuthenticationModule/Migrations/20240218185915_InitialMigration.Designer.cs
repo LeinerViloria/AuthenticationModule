@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthenticationModule.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20240218164137_InitialMigration")]
+    [Migration("20240218185915_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace AuthenticationModule.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime?>("LastUpdateDate")
                         .HasColumnType("datetime(6)");
@@ -42,7 +42,15 @@ namespace AuthenticationModule.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
                     b.HasKey("Rowid");
+
+                    b.HasIndex(new[] { "Email" }, "Ix_User__Email")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

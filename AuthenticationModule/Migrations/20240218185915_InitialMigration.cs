@@ -21,10 +21,12 @@ namespace AuthenticationModule.Migrations
                 {
                     Rowid = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    RowVersion = table.Column<DateTime>(type: "timestamp(6)", rowVersion: true, nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
                     CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     LastUpdateDate = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
@@ -33,6 +35,12 @@ namespace AuthenticationModule.Migrations
                     table.PrimaryKey("PK_User", x => x.Rowid);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "Ix_User__Email",
+                table: "User",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
