@@ -12,18 +12,13 @@ namespace AuthenticationModule
         {
             var ConnectionString = configurationManager.GetConnectionString("Connection");
 
+            services.Configure<TokenConfiguration>(configurationManager.GetSection("Authentication"));
+
             Action<IServiceProvider, DbContextOptionsBuilder> DbContextOptions = (sp, options) => {
                 options.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString));
             };
 
             services.AddDbContextFactory<AuthenticationContext>(DbContextOptions, ServiceLifetime.Transient);
-            services.AddScoped<IJWT, JWT>();
-
-            var configuration = configurationManager.GetSection("Authentication").Get<TokenConfiguration>();
-
-            services.AddScoped<ITokenConfiguration, TokenConfiguration>(
-                sp => configuration!
-            );
         }
     }
 }

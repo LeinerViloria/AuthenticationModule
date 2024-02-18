@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using AuthenticationModule.DTOS;
 using AuthenticationModule.Entities;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthenticationModule.Services
@@ -22,11 +23,11 @@ namespace AuthenticationModule.Services
         readonly string SecretKey;
         readonly int MinutesExp;
 
-        public JWT(ITokenConfiguration tokenConfiguration)
+        public JWT(IOptions<TokenConfiguration> options)
         {
-            Salt = tokenConfiguration.Salt;
-            SecretKey = tokenConfiguration.Secret;
-            MinutesExp = tokenConfiguration.MinutesExp;
+            Salt = options.Value.Salt;
+            SecretKey = options.Value.Secret;
+            MinutesExp = options.Value.MinutesExp;
         }
 
         public string Generate(User obj)

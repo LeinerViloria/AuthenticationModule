@@ -2,6 +2,7 @@ using AuthenticationModule;
 using AuthenticationModule.DTOS;
 using AuthenticationModule.Repository;
 using AuthenticationModule.DTOS;
+using AuthenticationModule.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
