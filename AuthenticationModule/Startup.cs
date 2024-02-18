@@ -18,8 +18,12 @@ namespace AuthenticationModule
 
             services.AddDbContextFactory<AuthenticationContext>(DbContextOptions, ServiceLifetime.Transient);
             services.AddScoped<IJWT, JWT>();
-            services.Configure<TokenConfiguration>(configurationManager.GetSection("Authentication"));
-           services.AddScoped<ITokenConfiguration, TokenConfiguration>();
+
+            var configuration = configurationManager.GetSection("Authentication").Get<TokenConfiguration>();
+
+            services.AddScoped<ITokenConfiguration, TokenConfiguration>(
+                sp => configuration!
+            );
         }
     }
 }

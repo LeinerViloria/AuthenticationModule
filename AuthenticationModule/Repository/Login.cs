@@ -2,13 +2,15 @@
 using AuthenticationModule.Access;
 using AuthenticationModule.DTOS;
 using AuthenticationModule.Entities;
+using AuthenticationModule.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationModule.Repository
 {
-    public class LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory)
+    public class LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory, ITokenConfiguration tokenConfiguration)
     {
         private readonly IDbContextFactory<AuthenticationContext> _dbContextFactory = dbContextFactory;
+        private readonly ITokenConfiguration _tokenConfiguration = tokenConfiguration;
 
         public void Login()
         {
@@ -29,6 +31,7 @@ namespace AuthenticationModule.Repository
 
             using(var context = _dbContextFactory.CreateDbContext())
             {
+
                 context.Add(NewUser);
                 context.SaveChanges();
             }
