@@ -1,8 +1,7 @@
 using AuthenticationModule;
 using AuthenticationModule.DTOS;
 using AuthenticationModule.Repository;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+using AuthenticationModule.DTOS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,13 +34,19 @@ app.MapPost("/register", (IServiceProvider provider, UserToCreateDTO Data) =>
    try
    {
         var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
-        var Result = Login.Register(Data);
+        var Result = new ActionResult<string>(){
+            Success = true,
+            Data = Login.Register(Data)
+        };
         return Result;
    }
    catch (Exception e)
    {
-        return string.IsNullOrEmpty($"{e.InnerException}") ?
-            e.Message : $"{e.InnerException}";
+        var Error = new ActionResult<string>(){
+            Error = string.IsNullOrEmpty($"{e.InnerException}") ?
+            e.Message : $"{e.InnerException}"
+        };
+        return Error;
    }
 }).WithName("SignUp")
 .WithOpenApi();
