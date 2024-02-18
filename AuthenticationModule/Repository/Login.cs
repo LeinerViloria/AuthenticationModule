@@ -1,4 +1,6 @@
 
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using AuthenticationModule.Access;
 using AuthenticationModule.DTOS;
 using AuthenticationModule.Entities;
@@ -11,8 +13,8 @@ namespace AuthenticationModule.Repository
 {
     public class LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory, IOptions<TokenConfiguration> options, IJWTService jwtService)
     {
-        private readonly IDbContextFactory<AuthenticationContext> _dbContextFactory = dbContextFactory;
-        private readonly ITokenConfiguration _tokenConfiguration = options.Value;
+        readonly IDbContextFactory<AuthenticationContext> _dbContextFactory = dbContextFactory;
+        readonly ITokenConfiguration _tokenConfiguration = options.Value;
         readonly IJWTService _jWTService = jwtService;
 
         public void Login()
@@ -32,10 +34,17 @@ namespace AuthenticationModule.Repository
                 Password = Utils.HashTo256(Obj.Password, _tokenConfiguration.Salt)
             };
 
-            using(var context = _dbContextFactory.CreateDbContext())
+            var Errors = new List<ValidationResult>();
+
+            var IsValid = DataAnnotationsValidator.Validate<User>(NewUser, ref Errors);
+
+            if(!IsValid)
+                throw new Exception(JsonSerializer.Serialize(Errors.Select(x => x.ErrorMessage)));
+
+            using(var dbContext = _dbContextFactory.CreateDbContext())
             {
-                context.Add(NewUser);
-                context.SaveChanges();
+                dbContext.Add(NewUser);
+                dbContext.SaveChanges();
             }
 
             // var Token = _jWTService.Generate(NewUser);
