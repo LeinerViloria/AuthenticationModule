@@ -15,5 +15,10 @@ namespace AuthenticationModule.Repository
                 
             }
         }
+
+        public void Register()
+        {
+            
+        }
     }
 }

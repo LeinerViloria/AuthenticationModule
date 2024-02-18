@@ -26,7 +26,15 @@ app.MapPost("/login", (IServiceProvider provider) =>
     var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
     Login.Login();
 })
-.WithName("Login")
+.WithName("LogIn")
+.WithOpenApi();
+
+app.MapPost("/register", (IServiceProvider provider) =>
+{
+    var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
+    Login.Register();
+})
+.WithName("SignUp")
 .WithOpenApi();
 
 app.Run();

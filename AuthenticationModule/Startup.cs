@@ -1,5 +1,6 @@
 
 using AuthenticationModule.Access;
+using AuthenticationModule.Services;
 using Microsoft.EntityFrameworkCore;
 using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
 
@@ -16,6 +17,9 @@ namespace AuthenticationModule
             };
 
             services.AddDbContextFactory<AuthenticationContext>(DbContextOptions, ServiceLifetime.Transient);
+            services.AddScoped<IJWT, JWT>();
+            services.Configure<TokenConfiguration>(configurationManager.GetSection("Authentication"));
+           services.AddScoped<ITokenConfiguration, TokenConfiguration>();
         }
     }
 }
