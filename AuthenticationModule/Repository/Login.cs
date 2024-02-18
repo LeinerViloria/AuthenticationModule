@@ -9,10 +9,11 @@ using Microsoft.Extensions.Options;
 
 namespace AuthenticationModule.Repository
 {
-    public class LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory, IOptions<TokenConfiguration> options)
+    public class LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory, IOptions<TokenConfiguration> options, IJWTService jwtService)
     {
         private readonly IDbContextFactory<AuthenticationContext> _dbContextFactory = dbContextFactory;
         private readonly ITokenConfiguration _tokenConfiguration = options.Value;
+        readonly IJWTService _jWTService = jwtService;
 
         public void Login()
         {
@@ -37,8 +38,9 @@ namespace AuthenticationModule.Repository
                 context.SaveChanges();
             }
 
-            var Token = "Token X";
-            return Token;
+            // var Token = _jWTService.Generate(NewUser);
+            // return Token;
+            return "";
         }
     }
 }

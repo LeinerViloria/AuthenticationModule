@@ -10,20 +10,20 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthenticationModule.Services
 {
-    public interface IJWT
+    public interface IJWTService
     {
         public string Generate(User obj);
 
         public T Validate<T>(string token);
     }
 
-    public class JWT : IJWT
+    public class JWTService : IJWTService
     {
         readonly string Salt;
         readonly string SecretKey;
         readonly int MinutesExp;
 
-        public JWT(IOptions<TokenConfiguration> options)
+        public JWTService(IOptions<TokenConfiguration> options)
         {
             Salt = options.Value.Salt;
             SecretKey = options.Value.Secret;

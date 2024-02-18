@@ -19,6 +19,7 @@ namespace AuthenticationModule
             };
 
             services.AddDbContextFactory<AuthenticationContext>(DbContextOptions, ServiceLifetime.Transient);
+            services.AddScoped<IJWTService, JWTService>();
         }
     }
 }
