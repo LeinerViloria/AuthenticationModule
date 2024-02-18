@@ -1,5 +1,7 @@
 using AuthenticationModule;
+using AuthenticationModule.DTOS;
 using AuthenticationModule.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,16 +27,15 @@ app.MapPost("/login", (IServiceProvider provider) =>
 {
     var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
     Login.Login();
-})
-.WithName("LogIn")
+}).WithName("LogIn")
 .WithOpenApi();
 
-app.MapPost("/register", (IServiceProvider provider) =>
+app.MapPost("/register", (IServiceProvider provider, UserToCreateDTO Data) =>
 {
     var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
-    Login.Register();
-})
-.WithName("SignUp")
+    var Result = Login.Register(Data);
+    return Result;
+}).WithName("SignUp")
 .WithOpenApi();
 
 app.Run();
