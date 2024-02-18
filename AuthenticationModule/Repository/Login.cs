@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationModule.Repository
 {
-    public class LoginRepository
+    public class LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory)
     {
-        private readonly IDbContextFactory<AuthenticationContext> _dbContextFactory;
-        public LoginRepository(IDbContextFactory<AuthenticationContext> dbContextFactory)
-        {
-            _dbContextFactory = dbContextFactory;
-        }
+        private readonly IDbContextFactory<AuthenticationContext> _dbContextFactory = dbContextFactory;
 
         public void Login()
         {
