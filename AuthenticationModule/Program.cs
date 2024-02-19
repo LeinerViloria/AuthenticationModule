@@ -21,14 +21,29 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/login", (IServiceProvider provider) =>
+app.MapPost("/login", (IServiceProvider provider, UserDTO Data) =>
 {
-    var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
-    Login.Login();
+    try
+    {
+        var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
+        var Result = new ActionResult<string>(){
+            Success = true,
+            Data = Login.Login(Data)
+        };
+        return Result;
+    }
+    catch (Exception e)
+    {
+        var Error = new ActionResult<string>(){
+            Error = string.IsNullOrEmpty($"{e.InnerException}") ?
+            e.Message : $"{e.InnerException}"
+        };
+        return Error;
+    }
 }).WithName("LogIn")
 .WithOpenApi();
 
-app.MapPost("/register", (IServiceProvider provider, UserToCreateDTO Data) =>
+app.MapPost("/register", (IServiceProvider provider, UserDTO Data) =>
 {
    try
    {

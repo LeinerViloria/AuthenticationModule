@@ -17,15 +17,15 @@ namespace AuthenticationModule.Repository
         readonly ITokenConfiguration _tokenConfiguration = options.Value;
         readonly IJWTService _jWTService = jwtService;
 
-        public void Login()
+        public string Login(UserDTO Obj)
         {
             using(var context = _dbContextFactory.CreateDbContext())
             {
-                
+                return "";
             }
         }
 
-        public string Register(UserToCreateDTO Obj)
+        public string Register(UserDTO Obj)
         {
             var NewUser = new User()
             {
