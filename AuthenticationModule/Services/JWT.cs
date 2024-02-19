@@ -7,6 +7,7 @@ using AuthenticationModule.DTOS;
 using AuthenticationModule.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace AuthenticationModule.Services
 {
@@ -30,8 +31,11 @@ namespace AuthenticationModule.Services
             MinutesExp = options.Value.MinutesExp;
         }
 
-        public string Generate(User obj)
+        public string Generate(User? obj)
         {
+            if(obj is null)
+                return string.Empty;
+
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var JwtUser = new JWTUserDTO()
@@ -45,11 +49,11 @@ namespace AuthenticationModule.Services
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new[] { 
-                    new Claim("user", JsonSerializer.Serialize(JwtUser))
+                    new Claim("user", JsonConvert.SerializeObject(JwtUser, Formatting.None))
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(MinutesExp),
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key), SecurityAlgorithms.Aes256CbcHmacSha512
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
                 )
             };
 

@@ -47,9 +47,8 @@ namespace AuthenticationModule.Repository
                 dbContext.SaveChanges();
             }
 
-            // var Token = _jWTService.Generate(NewUser);
-            // return Token;
-            return "";
+            var Token = _jWTService.Generate(NewUser);
+            return Token;
         }
     }
 }
