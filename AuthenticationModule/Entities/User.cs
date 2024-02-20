@@ -10,7 +10,9 @@ namespace AuthenticationModule.Entities
         [Required]
         [EmailAddress(ErrorMessage = "Invalid email")]
         public string Email {get; set;}
+
         [Required]
+        [StringLength(14, MinimumLength = 5, ErrorMessage = "The password must have between 5 and 14 characters.")]
         public string Password {get; set;}
     }
 }

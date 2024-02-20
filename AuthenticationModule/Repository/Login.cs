@@ -31,7 +31,7 @@ namespace AuthenticationModule.Repository
             {
                 CreationDate = DateTime.UtcNow,
                 Email = Obj.Email,
-                Password = Utils.HashTo256(Obj.Password, _tokenConfiguration.Salt)
+                Password = Obj.Password
             };
 
             var Errors = new List<ValidationResult>();
@@ -39,7 +39,9 @@ namespace AuthenticationModule.Repository
             var IsValid = DataAnnotationsValidator.Validate<User>(NewUser, ref Errors);
 
             if(!IsValid)
-                throw new Exception(JsonSerializer.Serialize(Errors.Select(x => x.ErrorMessage)));
+                throw new ArgumentNullException(JsonSerializer.Serialize(Errors.Select(x => x.ErrorMessage)));
+
+            NewUser.Password = Utils.HashTo256(NewUser.Password, _tokenConfiguration.Salt);
 
             using(var dbContext = _dbContextFactory.CreateDbContext())
             {
