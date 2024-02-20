@@ -8,7 +8,7 @@ namespace AuthenticationModule.Entities
     public class User : BaseObj
     {
         [Required]
-        [EmailAddress(ErrorMessage = "Invalid email")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Invalid email")]
         public string Email {get; set;}
 
         [Required]
