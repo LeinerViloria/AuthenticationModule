@@ -7,12 +7,14 @@ namespace AuthenticationModule.Databases
     {
         protected readonly IServiceProvider provider;
         protected readonly string ConnectionString;
-        protected Database(IServiceProvider serviceProvider, string Connection)
+        protected readonly DbContextOptionsBuilder dbContextOptions;
+        protected Database(IServiceProvider serviceProvider, DbContextOptionsBuilder options, string Connection)
         {
             provider = serviceProvider;
+            dbContextOptions = options;
             ConnectionString = Connection;
         }
 
-        public abstract void SetConnection(DbContextOptionsBuilder dbContextOptions);
+        public abstract void SetConnection();
     }
 }

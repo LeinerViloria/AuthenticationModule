@@ -5,6 +5,6 @@ namespace AuthenticationModule.Databases
 {
     public interface IDatabase
     {
-        void SetConnection(DbContextOptionsBuilder dbContextOptions);
+        void SetConnection();
     }
 }

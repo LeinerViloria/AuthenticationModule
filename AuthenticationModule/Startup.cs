@@ -19,8 +19,8 @@ namespace AuthenticationModule
             var DbType = Utils.SearchType($"AuthenticationModule.Databases.{Connection!.Provider}");
 
             Action<IServiceProvider, DbContextOptionsBuilder> DbContextOptions = (sp, options) => {
-                var DbInstance = (IDatabase) ActivatorUtilities.CreateInstance(sp, DbType!, Connection!.Connection);
-                DbInstance.SetConnection(options);
+                var DbInstance = (IDatabase) ActivatorUtilities.CreateInstance(sp, DbType!, options, Connection!.Connection);
+                DbInstance.SetConnection();
             };
 
             services.AddDbContextFactory<AuthenticationContext>(DbContextOptions, ServiceLifetime.Transient);
