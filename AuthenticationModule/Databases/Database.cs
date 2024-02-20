@@ -3,6 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationModule.Databases
 {
+    public interface IDatabase
+    {
+        void SetConnection();
+    }
+    
     public abstract class Database : IDatabase
     {
         protected readonly IServiceProvider provider;
