@@ -24,5 +24,16 @@ namespace AuthenticationModule.Utilities
             }
         }
 
+        public static Type? SearchType(string Name)
+        {
+            var Result = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Where(x => x.GetType(Name) is not null)
+                .Select(x => x.GetType(Name))
+                .FirstOrDefault();
+
+            return Result;
+        }
+
     }
 }
