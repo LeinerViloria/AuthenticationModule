@@ -21,7 +21,22 @@ namespace AuthenticationModule.Repository
         {
             using(var context = _dbContextFactory.CreateDbContext())
             {
-                return "";
+                var User = context.Set<User>()
+                    .AsNoTracking()
+                    .Where(x => x.Email == Obj.Email)
+                    .Select(x => new User{
+                        Rowid = x.Rowid,
+                        Email = x.Email,
+                        Password = x.Password
+                    }).First();
+
+                var PasswordIsValid = Utils.Compare(_tokenConfiguration.Salt, Obj.Password, User.Password);
+
+                if(!PasswordIsValid)
+                    throw new Exception();
+
+                var Token = _jWTService.Generate(User);
+                return Token;
             }
         }
 

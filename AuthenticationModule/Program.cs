@@ -35,8 +35,7 @@ app.MapPost("/login", (IServiceProvider provider, UserDTO Data) =>
     catch (Exception e)
     {
         var Error = new ActionResult<string>(){
-            Error = string.IsNullOrEmpty($"{e.InnerException}") ?
-            e.Message : $"{e.InnerException}"
+            Error = "Invalid credentials"
         };
         return Error;
     }

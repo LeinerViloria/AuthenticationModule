@@ -24,6 +24,12 @@ namespace AuthenticationModule.Utilities
             }
         }
 
+        public static bool Compare(string Salt, string Password, string EncryptedPassword)
+        {
+            var PassEncrypted = HashTo256(Password, Salt);
+            return EncryptedPassword.Equals(PassEncrypted);
+        }
+
         public static Type? SearchType(string Name)
         {
             var Result = AppDomain.CurrentDomain
