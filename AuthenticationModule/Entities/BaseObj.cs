@@ -10,9 +10,6 @@ namespace AuthenticationModule.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Rowid {get; set;}
 
-        [Timestamp]
-        public virtual byte[] RowVersion { get; set; }
-
         [Required]
         public DateTime CreationDate {get; set;}
 

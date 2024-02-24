@@ -5,7 +5,7 @@
 namespace AuthenticationModule.Migrations
 {
     /// <inheritdoc />
-    public partial class Ajuste_RegularExpression : Migration
+    public partial class Password_Length : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
