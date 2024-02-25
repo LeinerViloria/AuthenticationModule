@@ -1,0 +1,54 @@
+# https://docs.docker.com/go/compose-spec-reference/
+# https://github.com/docker/awesome-compose
+
+version: "1"
+networks:
+  Distribuidos_red:
+    external: true
+services:
+  authentication_module:
+    build:
+      context: ./Dockerfile
+      target: final
+    ports:
+      - 6000:8080
+    networks:
+      - Distribuidos_red
+  database:
+    image: postgres
+    #restart: always
+    user: postgres
+    secrets:
+      - db-password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=demo
+      - POSTGRES_PASSWORD=1234321
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - Distribuidos_red
+
+volumes:
+  postgres-data:
+
+secrets:
+  db-password:
+    file: db/password.txt
+
+# The commented out section below is an example of how to define a PostgreSQL
+# database that your application can use. `depends_on` tells Docker Compose to
+# start the database before your application. The `db-data` volume persists the
+# database data between container restarts. The `db-password` secret is used
+# to set the database password. You must create `db/password.txt` and add
+# a password of your choosing to it before running `docker compose up`.
+#     depends_on:
+#       db:
+#         condition: service_healthy
+
