@@ -6,8 +6,6 @@ COPY ./*.csproj ./
 RUN dotnet restore
 # Copy everything
 COPY . ./
-#RUN dotnet build
-#RUN dotnet ef database update
 # Build and publish a release
 RUN dotnet publish -c Release -o AuthenticationModule
 
