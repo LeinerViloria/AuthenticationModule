@@ -64,4 +64,26 @@ app.MapPost("/register", (IServiceProvider provider, UserDTO Data) =>
 }).WithName("SignUp")
 .WithOpenApi();
 
+app.MapPost("/validatetoken", (IServiceProvider provider, HttpContext Context) => 
+{
+    try
+   {
+        var Token = Context.Request.Headers.Authorization.First()!.Split(' ')[1];
+        var Login = ActivatorUtilities.CreateInstance<LoginRepository>(provider);
+        var Result = new ActionResult<JWTUserDTO>(){
+            Success = true,
+            Data = Login.ValidateToken(Token)
+        };
+        return Result;
+   }
+   catch (Exception e)
+   {
+        var Error = new ActionResult<JWTUserDTO>(){
+            Error = "Invalid token"
+        };
+        return Error;
+   }
+}).WithName("ValidateToken")
+.WithOpenApi();
+
 app.Run();

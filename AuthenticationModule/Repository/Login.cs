@@ -67,5 +67,11 @@ namespace AuthenticationModule.Repository
             var Token = _jWTService.Generate(NewUser);
             return Token;
         }
+
+        public JWTUserDTO ValidateToken(string Token)
+        {
+            var Result = _jWTService.Validate<JWTUserDTO>(Token);
+            return Result;
+        }
     }
 }

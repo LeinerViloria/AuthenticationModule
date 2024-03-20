@@ -63,7 +63,25 @@ namespace AuthenticationModule.Services
 
         public T Validate<T>(string token)
         {
-            throw new NotImplementedException();
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var key = Encoding.ASCII.GetBytes(SecretKey);
+
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var user = jwtToken.Claims.First(x => x.Type == "user");
+
+            var Result = JsonConvert.DeserializeObject<T>(user.Value)!;
+
+            return Result;
         }
     }
 }
