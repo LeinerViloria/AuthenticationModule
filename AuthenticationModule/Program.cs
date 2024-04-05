@@ -1,4 +1,6 @@
+using Authentication.Utilities;
 using AuthenticationModule;
+using AuthenticationModule.Access;
 using AuthenticationModule.DTOS;
 using AuthenticationModule.Repository;
 
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddExtensions(builder.Configuration);
+builder.Services.MigrateDatabase<AuthenticationContext>();
 
 var app = builder.Build();
 
