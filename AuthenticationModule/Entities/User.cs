@@ -14,5 +14,6 @@ namespace AuthenticationModule.Entities
         [Required]
         [StringLength(128, MinimumLength = 6, ErrorMessage = "The password must have between 6 and 14 characters.")]
         public string Password {get; set;}
+        
     }
 }
